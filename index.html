@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Capitol Climb: From Town Hall to the White House</title>
+<style>
+:root{--teal:#14a3a3;--teal-d:#0d7c7c;--teal-l:#d5f2f0;--violet:#7b5cd6;--violet-l:#ebe4fb;--gold:#f2b134;--coral:#ef6f6c;--cream:#fff8ec;--ink:#2b2d42;--muted:#5d6280}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--cream);color:var(--ink);font-family:"Nunito","Nunito Sans","Segoe UI",system-ui,sans-serif;font-size:21px;line-height:1.4}
+body.calm *{animation:none!important;transition:none!important}
+h1,h2,h3{font-family:"Fredoka","Baloo 2","Nunito",system-ui,sans-serif;margin:.2em 0;line-height:1.15}
+h1{font-size:2em}h2{font-size:1.55em}
+button{font:inherit;font-weight:800;cursor:pointer;border:none;border-radius:20px;min-height:64px;padding:.5em 1.1em;background:var(--teal);color:#fff;box-shadow:0 5px 0 var(--teal-d);touch-action:manipulation}
+button:active{transform:translateY(3px);box-shadow:0 2px 0 var(--teal-d)}
+button.ghost{background:#fff;color:var(--ink);box-shadow:0 5px 0 #e0d6c2;border:3px solid #eee3cf}
+button.gold{background:var(--gold);color:var(--ink);box-shadow:0 5px 0 #c88c1c}
+button.big{font-size:1.25em;min-height:76px;width:100%}
+button:focus-visible{outline:4px solid var(--gold);outline-offset:3px}
+#app{max-width:1000px;margin:0 auto;padding:12px}
+.screen{animation:pop .35s ease}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.card{background:#fff;border-radius:26px;box-shadow:0 6px 0 #eadfca;padding:20px}
+.center{text-align:center}.muted{color:var(--muted)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-block;padding:.15em .8em;border-radius:99px;background:var(--teal-l);color:var(--teal-d);font-weight:800;font-size:.8em}
+.title-wrap{position:relative;border-radius:30px;overflow:hidden;background:linear-gradient(#bfeee9,#fff3d6);min-height:80vh;display:flex;flex-direction:column;align-items:center;padding:22px 12px 0}
+.title-wrap h1{font-size:clamp(2.4rem,8vw,4.4rem);text-shadow:0 4px 0 #fff;text-align:center;margin:0}
+.title-wrap h2{color:var(--teal-d);text-align:center;font-size:clamp(1.1rem,3.5vw,1.6rem)}
+.title-btns{display:flex;flex-direction:column;gap:14px;width:min(360px,92%);z-index:2;margin:10px 0}
+.skyline{width:100%;height:auto;margin-top:auto;display:block}
+.note{text-align:center;font-size:.8em;color:var(--muted);margin:10px 0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.lvl{font-family:"Fredoka",sans-serif;font-weight:700;color:var(--teal-d);font-size:1.1em}
+.ladder{display:flex;gap:6px;font-size:1.2em}
+.hearts{font-size:1.5em;letter-spacing:2px;white-space:nowrap}
+.say{background:#fff;border:0;box-shadow:0 4px 0 #e0d6c2;min-height:56px;min-width:56px;padding:.2em .6em;color:var(--ink);font-size:1em}
+.lines{font-size:1.3em;list-style:none;padding:0;margin:14px 0}
+.lines li{background:var(--teal-l);border-radius:18px;padding:12px 16px;margin:10px 0}
+.hoot{display:flex;gap:12px;align-items:center;background:#fff;border-radius:20px;padding:10px 14px;margin-top:12px}
+.hoot svg{flex:0 0 70px}
+.mapwrap{position:relative;border-radius:22px;overflow:hidden}
+.mapwrap svg{pointer-events:none;display:block;width:100%;height:auto}
+.pinbtn{z-index:3;position:absolute;transform:translate(-50%,-50%);min-height:64px;font-size:1em;padding:.3em .8em;border-radius:22px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.pinbtn:active{transform:translate(-50%,-46%)}.pinbtn.done{background:#b9b4a7;box-shadow:0 5px 0 #8f8a7d}
+.pinbtn .e{font-size:1.5em}
+.pinbtn.pulse .e{display:inline-block;animation:bob 1.4s infinite}
+@keyframes bob{50%{transform:translateY(-6px) scale(1.12)}}
+@media(max-width:640px){.pinbtn{font-size:.8em;min-height:58px;padding:.2em .55em}.pinbtn .lab{display:none}.pinbtn .e{font-size:1.8em}}
+.legend{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.legend button{text-align:left}
+.dlg{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start}
+@media(max-width:600px){.dlg{grid-template-columns:90px 1fr}}
+.portrait{width:100%;border-radius:22px}
+.bubble{background:#fff;border-radius:22px;padding:16px 18px;position:relative;box-shadow:0 4px 0 #eadfca;font-size:1.25em}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+@media(max-width:700px){.choices{grid-template-columns:1fr}}
+.choice{background:#fff;color:var(--ink);border:3px solid #eee3cf;box-shadow:0 6px 0 #e0d6c2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;font-size:1.1em}
+@media(max-width:700px){.choice{flex-direction:row;min-height:84px;justify-content:flex-start;text-align:left}}
+.choice .e{font-size:2.6em;line-height:1}
+.tapzone{position:relative;height:340px;background:#eaf6ee;border-radius:24px;overflow:hidden;margin-top:10px}
+.tapzone button{position:absolute;width:84px;height:84px;font-size:2.6em;border-radius:50%;padding:0;background:#fff;box-shadow:0 5px 0 #d8ceb9}
+.elect{background:linear-gradient(#2b2d42,#41437a);color:#fff;border-radius:30px;padding:22px;min-height:78vh;text-align:center}
+.elect h1{color:#fff}
+.bigbar{display:flex;height:58px;border-radius:29px;overflow:hidden;background:#555a7a;font-weight:900;margin:20px 0;position:relative}
+.bigbar div{display:flex;align-items:center;padding:0 16px;white-space:nowrap;overflow:hidden;transition:width .25s}
+.box{font-size:3.2em;display:inline-block;animation:drop .7s infinite}
+@keyframes drop{0%{transform:translateY(-18px)}60%{transform:none}}
+.fcard{background:#fff;border-radius:20px;padding:16px;border-top:8px solid var(--gold);box-shadow:0 5px 0 #eadfca;text-align:left;color:var(--ink);font-size:1.1em}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.locked{opacity:.4;filter:grayscale(1)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:10px;max-height:46vh;overflow:auto;padding:4px}
+.sgrid button{background:#fff;color:var(--ink);box-shadow:0 4px 0 #e0d6c2;min-height:64px;padding:0}
+.regions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.regions button{min-height:110px;font-size:1.15em;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.regions button.done{background:#b9b4a7;box-shadow:0 5px 0 #8f8a7d}
+.regions .e{font-size:1.9em}
+.track{position:relative;height:48px;background:#efe8da;border-radius:24px;overflow:hidden;display:flex}
+.track .me{background:var(--teal);transition:width .5s}.track .them{background:repeating-linear-gradient(45deg,#7b5cd6 0 8px,#9c84e6 8px 14px);margin-left:auto;transition:width .5s}
+.track .mark{position:absolute;left:50.2%;top:0;bottom:0;width:4px;background:var(--ink)}
+.track b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink);text-shadow:0 0 4px #fff}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:14px 20px;border-radius:18px;z-index:120;font-weight:800;max-width:92vw}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}
+.confetti i{position:absolute;width:12px;height:16px;top:-20px;animation:fall 2.6s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.stars{font-size:2em;letter-spacing:4px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+const STATES=[["AK","Alaska",3,0,0,"W"],["ME","Maine",4,10,0,"NE"],["WI","Wisconsin",10,5,1,"MW"],["VT","Vermont",3,9,1,"NE"],["NH","New Hampshire",4,10,1,"NE"],
+["WA","Washington",12,0,2,"W"],["ID","Idaho",4,1,2,"W"],["MT","Montana",4,2,2,"W"],["ND","North Dakota",3,3,2,"MW"],["MN","Minnesota",10,4,2,"MW"],["IL","Illinois",19,5,2,"MW"],["MI","Michigan",15,6,2,"MW"],["NY","New York",28,8,2,"NE"],["MA","Massachusetts",11,9,2,"NE"],
+["OR","Oregon",8,0,3,"W"],["NV","Nevada",6,1,3,"W"],["WY","Wyoming",3,2,3,"W"],["SD","South Dakota",3,3,3,"MW"],["IA","Iowa",6,4,3,"MW"],["IN","Indiana",11,5,3,"MW"],["OH","Ohio",17,6,3,"MW"],["PA","Pennsylvania",19,7,3,"NE"],["NJ","New Jersey",14,8,3,"NE"],["CT","Connecticut",7,9,3,"NE"],["RI","Rhode Island",4,10,3,"NE"],
+["CA","California",54,0,4,"W"],["UT","Utah",6,1,4,"W"],["CO","Colorado",10,2,4,"W"],["NE","Nebraska",5,3,4,"MW"],["MO","Missouri",10,4,4,"MW"],["KY","Kentucky",8,5,4,"S"],["WV","West Virginia",4,6,4,"S"],["VA","Virginia",13,7,4,"S"],["MD","Maryland",10,8,4,"NE"],["DE","Delaware",3,9,4,"NE"],
+["AZ","Arizona",11,1,5,"W"],["NM","New Mexico",5,2,5,"W"],["KS","Kansas",6,3,5,"MW"],["AR","Arkansas",6,4,5,"S"],["TN","Tennessee",11,5,5,"S"],["NC","North Carolina",16,6,5,"S"],["SC","South Carolina",9,7,5,"S"],["DC","Washington, D.C.",3,8,5,"NE"],
+["OK","Oklahoma",7,3,6,"S"],["LA","Louisiana",8,4,6,"S"],["MS","Mississippi",6,5,6,"S"],["AL","Alabama",9,6,6,"S"],["GA","Georgia",16,7,6,"S"],
+["HI","Hawaii",4,0,7,"W"],["TX","Texas",40,3,7,"S"],["FL","Florida",30,8,7,"S"]];
+
+const REG={W:{n:"West",e:"🏔️"},MW:{n:"Midwest",e:"🌽"},S:{n:"South",e:"🌴"},NE:{n:"Northeast",e:"🗽"}};
+// choice: [emoji, text, hearts, reaction]
+const LEVELS=[
+{title:"City Council Member",e:"🏘️",sub:"Your Street, Your Say",place:"Ward 3, Maple Hollow",rival:"Chip Chatterly",rstyle:"very charming, very vague",rlook:3,
+ lines:[()=>"🏘️ The council is the city's <b>lawmaking body</b>. It passes local laws called <b>ordinances</b>.",()=>"🗳️ You're one vote, so you need a <b>majority</b>, like 4 of 7.",()=>"⏳ Terms vary by city, often <b>2 or 4 years</b>."],
+ talks:[{id:"a",who:"Grandpa Lou",role:"Retired bus driver",look:1,x:22,y:30,e:"🕳️",n:"Pothole Pile-Up",line:"These potholes rattle my teeth! The budget fixes only half the streets.",
+   c:[["👂","\"Show me the worst streets, Lou.\"",25,"Lou grins. \"Finally, someone who asks!\""],["🛠️","\"Fix the busiest roads first.\"",25,"Drivers cheer. You explained the tradeoff clearly."],["🙉","\"Potholes aren't my problem.\"",-5,"City streets ARE the city's job!"]]},
+  {id:"b",who:"The Nguyen family",role:"Parents of three",look:2,x:72,y:28,e:"📚",n:"Library Late Nights",line:"Could the library stay open later? Our kids need a quiet place to study.",
+   c:[["🤝","\"Two late nights, with volunteer tutors.\"",25,"A solid middle path. Volunteers sign up!"],["💡","\"Weekend hours would cost less.\"",25,"Clear and honest!"],["🙈","Talk about your lemonade stand.",-5,"The Nguyens wanted a real answer."]]}],
+ game:{x:45,y:72,e:"🕳️",n:"Fill 5 potholes",tap:"🕳️",done:"🛣️"},
+ card:["Ordinance","A local law passed by a city council. It can't conflict with state or federal law."]},
+{title:"Mayor",e:"🏙️",sub:"Keys to the City",place:"All of Maple Hollow",rival:"Dr. Vera Ledger",rstyle:"spreadsheet wizard",rlook:4,
+ lines:[()=>"🏙️ The mayor is the city's <b>chief executive</b>, leading fire, parks, and public works.",()=>"🤝 The council can reject your budget or <b>override a veto</b>.",()=>"⏳ Usually a <b>4-year</b> term."],
+ talks:[{id:"a",who:"Chief Ember",role:"Fire & emergency chief",look:6,x:22,y:62,e:"🌊",n:"River Rising",line:"Flood warning! The river's rising fast.",
+   c:[["📞","\"I'll ask the governor for state help.\"",25,"State crews arrive by morning. Federalism in action!"],["🧱","\"Crews and volunteers, side by side.\"",25,"Neighbors fill sandbags. The town stays dry!"],["😴","\"Let's wait and see what happens.\"",-5,"Leaders act in emergencies!"]]},
+  {id:"b",who:"Ms. Okafor",role:"Bakery owner",look:7,x:72,y:30,e:"🥖",n:"Downtown Revival",line:"A downtown market would help my bakery, but neighbors fear traffic.",
+   c:[["🚌","\"A small market plus a bus stop.\"",25,"The bakery is busy!"],["👂","\"What would work for your street?\"",25,"She sketches a parking plan on a napkin."],["😠","\"Markets are a waste of time.\"",-5,"Ms. Okafor feels brushed off."]]}],
+ game:{x:50,y:78,e:"🗑️",n:"Clean up 5 pieces of litter",tap:"🗑️",done:"🌼"},
+ card:["Veto & Override","A veto is an executive's 'no.' Lawmakers can override it with a supermajority, often two-thirds."]},
+{title:"State Senator",e:"🏞️",sub:"The Statehouse",place:"State Senate District 14",rival:"Hank Hastings",rstyle:"loud yard signs, quiet ideas",rlook:8,
+ lines:[()=>"🏞️ You help write <b>state laws</b> and the state budget.",()=>"📜 Bills usually pass <b>both chambers</b>, then the governor signs.",s=>s.ab==="NE"?"⏳ Nebraska has just one chamber, the <b>Unicameral</b>. 4-year terms.":(SEN2.includes(s.ab)?`⏳ In ${s.n}, state senators serve <b>2-year</b> terms.`:`⏳ In ${s.n}, state senators usually serve <b>4-year</b> terms.`)],
+ talks:[{id:"a",who:"Ms. Brightwell",role:"Teacher",look:9,x:25,y:30,e:"🏫",n:"School Funding",line:"My class has 32 kids. A rural school has a leaky roof. Who gets help?",
+   c:[["🏫","\"A base amount for every school, plus extra per student.\"",25,"A fair formula for city and rural schools."],["👂","\"Let me visit both schools first.\"",25,"Now you understand both."],["🙄","\"Schools will figure it out.\"",-5,"She expected more."]]},
+  {id:"b",who:"Farmer Dee",role:"Runs a family farm",look:11,x:72,y:62,e:"📶",n:"Rural Broadband",line:"My kids do homework in a parking lot to get Wi-Fi!",
+   c:[["🏥","\"Start with schools and clinics, then expand.\"",25,"A practical first step!"],["💡","\"A grant costs money now but saves later.\"",25,"Honest about the tradeoff."],["🤷","\"That's not my district's problem.\"",-5,"Those farms ARE in your district!"]]}],
+ game:{x:48,y:72,e:"🗳️",n:"Collect 5 votes for your bill",tap:"🗳️",done:"✅"},
+ card:["How a Bill Becomes Law","Draft → committee → floor vote → other chamber → the executive signs or vetoes."]},
+{title:"Governor",e:"🏛️",sub:"Running the State",place:"Your whole state",rival:"Gov. Sterling Steady",rstyle:"the cautious incumbent",rlook:13,
+ lines:[()=>"🏛️ The governor is the state's <b>chief executive</b>, signing or <b>vetoing</b> bills.",()=>"⚖️ Lawmakers can override vetoes, and courts can overrule you.",s=>(s.ab==="NH"||s.ab==="VT")?`⏳ In ${s.n}, the governor serves a <b>2-year</b> term. Only NH and VT!`:`⏳ In ${s.n}, the governor serves a <b>4-year</b> term, like most states.`],
+ talks:[{id:"a",who:"Chief Ember",role:"State emergency director",look:6,x:24,y:35,e:"❄️",n:"Blizzard Command",line:"Three counties are snowed in! This is too big for the state alone.",
+   c:[["📞","\"Call the National Guard and ask the President for federal aid.\"",25,"States and the nation work together!"],["🏠","\"Open warm shelters first, then clear roads.\"",25,"Warm shelters save the day."],["🙈","\"It's just a little snow.\"",-5,"Three snowed-in counties disagree!"]]},
+  {id:"b",who:"Jaylen",role:"Student body president",look:16,x:72,y:62,e:"🌉",n:"Bridge Inspection",line:"Our bus crosses the old bridge daily. Is it safe?",
+   c:[["🔍","\"Let's inspect it together.\"",25,"Jaylen spots a crack! Great eyes."],["🛠️","\"Night repairs plus a free shuttle.\"",25,"Fixed, and traffic keeps moving."],["😂","Laugh it off.",-5,"It was a good question!"]]}],
+ game:{x:62,y:78,e:"❄️",n:"Plow 5 snowy roads",tap:"❄️",done:"🛣️"},
+ card:["Federalism","Power is shared between the nation and the states. The 10th Amendment reserves other powers to the states or the people."]},
+{title:"U.S. Senator",e:"🏛️",sub:"Two Per State",place:"Your whole state",rival:"Max Momentum",rstyle:"big money, big ads",rlook:17,
+ lines:[()=>"🏛️ One of <b>100 senators</b>, <b>2 per state</b>, voting on national laws.",()=>"🧮 Treaties need <b>two-thirds</b>: 67 votes.",()=>"⏳ <b>6-year</b> terms, with no term limits."],
+ talks:[{id:"a",who:"Sen. Bo Bridges",role:"Senator from another state",look:19,x:24,y:30,e:"🤝",n:"Infrastructure Bill",line:"My state needs ports, yours needs roads. Let's team up for 60 votes.",
+   c:[["🤝","\"Ports AND roads, phased over 5 years.\"",25,"Cloture reached: 61 votes!"],["👂","\"What does your state need most?\"",25,"Common ground found."],["🙅","\"Only my state matters.\"",-5,"You're 1 of 100: you need allies."]]},
+  {id:"b",who:"Judge Iris Fairweather",role:"Fictional judicial nominee",look:18,x:72,y:62,e:"⚖️",n:"Confirmation Hearing",line:"Senator, ask me anything about my experience.",
+   c:[["❓","\"What was your hardest case?\"",25,"A thoughtful answer!"],["⚖️","\"I'll judge you on experience and fairness.\"",25,"A clear, fair standard."],["📱","Scroll on your phone.",-5,"Pay attention in hearings!"]]}],
+ game:{x:30,y:28,e:"🙋",n:"Find 5 co-sponsors",tap:"🙋",done:"🤝"},
+ card:["Advice and Consent","The Senate confirms the President's nominees and approves treaties by a two-thirds vote."]},
+{title:"President",e:"🦅",sub:"The Final Climb",place:"The whole nation",rival:"Gov. Celeste Summit",rstyle:"polished and well-prepared",rlook:22,
+ lines:[()=>"🦅 Head of the <b>executive branch</b> and <b>Commander in Chief</b>.",()=>"⚖️ <b>Congress</b> writes laws, and <b>courts</b> check everyone.",()=>"⏳ <b>4-year</b> term, elected twice at most."],
+ talks:[{id:"a",who:"Sam",role:"Night-shift nurse",look:10,x:24,y:35,e:"💡",n:"Power Grid",line:"A blackout left our hospital on backup power for 3 days.",
+   c:[["🏥","\"Protect hospitals and schools first.\"",25,"Critical places come first."],["💡","\"Upgrade the grid with a small fee.\"",25,"Reliable power, honestly explained."],["🙉","\"Let's talk about something else.\"",-5,"Sam really needed an answer."]]},
+  {id:"b",who:"Nia Newsly",role:"Debate moderator",look:21,x:70,y:30,e:"🎤",n:"The Debate Stage",line:"Your rival says your plan is too slow. Respond!",
+   c:[["🧠","\"Fair point. Safety takes time, but here's how we'll speed up.\"",25,"Respectful and accurate. Applause!"],["🤝","\"We share goals. Here's where we differ.\"",25,"Clear tradeoffs win trust."],["😜","Make fun of your rival's haircut.",-5,"Debates reward respect, not insults."]]}],
+ game:{x:48,y:72,e:"👋",n:"Wave to 5 rallies",tap:"👋",done:"😊"},
+ card:["Electoral College","Electors = House seats + 2 Senators per state, plus 3 for D.C. 538 total; 270 wins."]}];
+const SEN2=["AZ","CT","GA","ID","ME","MA","NH","NY","NC","RI","SD","VT"];
+let S=null;
+const $=s=>document.querySelector(s);
+const app=()=>$("#app");
+const FAST=/fast/.test(location.search);
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const L=()=>LEVELS[S.lvl];
+function newGame(){S={st:null,lvl:0,h:30,done:{},cards:{},stars:0,road:null};}
+function save(){try{localStorage.setItem("capclimb2",JSON.stringify(S))}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem("capclimb2")||"null")}catch(e){return null}}
+function toast(m){document.querySelectorAll(".toast").forEach(t=>t.remove());const t=document.createElement("div");t.className="toast";t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2400)}
+function addCard(c){if(!S.cards[c[0]]){S.cards[c[0]]=c[1]}}
+function confetti(){if(document.body.classList.contains("calm"))return;const c=document.createElement("div");c.className="confetti";const cols=["#14a3a3","#f2b134","#ef6f6c","#7b5cd6","#fff"];for(let i=0;i<90;i++){const p=document.createElement("i");p.style.left=Math.random()*100+"%";p.style.background=cols[i%5];p.style.animationDelay=Math.random()*0.8+"s";c.appendChild(p)}document.body.appendChild(c);setTimeout(()=>c.remove(),3800)}
+function setScreen(h){document.querySelectorAll(".confetti").forEach(c=>c.remove());app().innerHTML=`<div class="screen">${h}</div>`;window.scrollTo(0,0)}
+const SKIN=["#f4d1b5","#e0ac83","#c68c5c","#8d5a3b","#5c3a24","#f1c9a5"],HAIR=["#2b2d42","#6b3e26","#c9a227","#b0b0b8","#e7e2da","#8a3b2b"],SHIRT=["#14a3a3","#f2b134","#ef6f6c","#7b5cd6","#4f9d69","#e88fb5","#5b8fd6"];
+function face(seed,o={}){const s=seed*7+3;const sk=SKIN[s%6],hr=HAIR[(s>>1)%6],sh=o.shirt||SHIRT[s%7],st=s%4;let back="",front="";
+ if(st===0)front=`<path d="M28 48 Q60 8 92 48 Q88 30 60 26 Q32 30 28 48Z" fill="${hr}"/>`;else if(st===1)front=`<circle cx="60" cy="24" r="16" fill="${hr}"/><path d="M27 56 Q60 8 93 56 Q88 34 60 32 Q32 34 27 56Z" fill="${hr}"/>`;else if(st===2){back=`<path d="M26 60 Q24 18 60 18 Q96 18 94 60 L98 104 L84 104 L86 60 L34 60 L36 104 L22 104Z" fill="${hr}"/>`;front=`<path d="M28 50 Q60 20 92 50 Q86 32 60 30 Q34 32 28 50Z" fill="${hr}"/>`}else front=`<path d="M30 44 Q60 18 90 44 L90 40 Q60 10 30 40Z" fill="${hr}"/>`;
+ return `<svg viewBox="0 0 120 140" class="portrait" role="img" aria-label="${o.label||"portrait"}"><rect width="120" height="140" rx="20" fill="${o.bg||"#d5f2f0"}"/>${back}<path d="M14 140 Q14 100 60 98 Q106 100 106 140Z" fill="${sh}"/><rect x="52" y="84" width="16" height="18" fill="${sk}"/><ellipse cx="60" cy="58" rx="32" ry="34" fill="${sk}"/>${front}<circle cx="48" cy="60" r="5" fill="#2b2d42"/><circle cx="72" cy="60" r="5" fill="#2b2d42"/><circle cx="49.5" cy="58.5" r="1.6" fill="#fff"/><circle cx="73.5" cy="58.5" r="1.6" fill="#fff"/>${seed%3===1?`<g fill="none" stroke="#2b2d42" stroke-width="2.5"><circle cx="48" cy="60" r="9"/><circle cx="72" cy="60" r="9"/><path d="M57 60h6"/></g>`:""}<ellipse cx="40" cy="72" rx="5" ry="3" fill="#ef6f6c" opacity=".35"/><ellipse cx="80" cy="72" rx="5" ry="3" fill="#ef6f6c" opacity=".35"/><path d="M50 76 Q60 86 70 76" stroke="#2b2d42" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`;}
+function hoot(sz=70){return `<svg viewBox="0 0 100 100" width="${sz}" height="${sz}" aria-label="Professor Hoot"><ellipse cx="50" cy="60" rx="34" ry="36" fill="#a07a52"/><ellipse cx="50" cy="68" rx="22" ry="24" fill="#f3e2c3"/><path d="M18 30 L30 42 L24 22Z M82 30 L70 42 L76 22Z" fill="#a07a52"/><circle cx="37" cy="46" r="13" fill="#fff"/><circle cx="63" cy="46" r="13" fill="#fff"/><circle cx="38" cy="47" r="6" fill="#2b2d42"/><circle cx="62" cy="47" r="6" fill="#2b2d42"/><g fill="none" stroke="#2b2d42" stroke-width="2.5"><circle cx="37" cy="46" r="14"/><circle cx="63" cy="46" r="14"/></g><path d="M45 58 L50 66 L55 58Z" fill="#f2b134"/><rect x="28" y="10" width="44" height="8" fill="#2b2d42"/><path d="M50 4 L80 12 L50 20 L20 12Z" fill="#2b2d42"/></svg>`;}
+const hootSay=t=>`<div class="hoot">${hoot()}<div><b>Professor Hoot:</b> ${t}</div></div>`;
+function skyline(){let b="";const rungs=["City Council","Mayor","State Senate","Governor","U.S. Senate","President"];
+ [[20,70,90],[100,50,130],[160,80,70],[250,60,110],[320,40,150],[790,60,120],[870,80,80],[960,50,140],[1030,70,100],[1110,70,130]].forEach(([x,w,h],i)=>{b+=`<rect x="${x}" y="${460-h}" width="${w}" height="${h}" rx="8" fill="${["#9fd9d4","#f6d58e","#c9bdf0","#f7b3b1"][i%4]}"/>`;for(let yy=460-h+14;yy<450;yy+=24)for(let xx=x+10;xx<x+w-12;xx+=20)b+=`<rect x="${xx}" y="${yy}" width="9" height="12" rx="2" fill="#fff" opacity=".8"/>`});
+ let lad=`<rect x="485" y="170" width="10" height="290" fill="#c88c1c"/><rect x="705" y="170" width="10" height="290" fill="#c88c1c"/>`;rungs.forEach((r,i)=>{const y=440-i*46;lad+=`<rect x="490" y="${y}" width="220" height="12" rx="6" fill="#f2b134"/><text x="600" y="${y-6}" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="700" font-size="16" fill="#2b2d42">${i+1}. ${r}</text>`});
+ const dome=`<g transform="translate(600,100)"><rect x="-70" y="30" width="140" height="22" fill="#fff" stroke="#2b2d42" stroke-width="3"/><path d="M-50 30 Q0 -40 50 30Z" fill="#fff" stroke="#2b2d42" stroke-width="3"/><rect x="-4" y="-30" width="8" height="22" fill="#2b2d42"/><circle cx="0" cy="-34" r="6" fill="#f2b134"/></g>`;
+ return `<svg class="skyline" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMax meet"><circle cx="1100" cy="120" r="46" fill="#ffd66b"/><path d="M0 460 Q300 440 600 460 T1200 460 V480 H0Z" fill="#7cc79a"/>${b}${dome}${lad}<g transform="translate(400,372)">${hoot(84)}</g></svg>`;}
+function heartsHTML(){const n=Math.round(Math.max(0,Math.min(100,S.h))/20);return `<span class="hearts" aria-label="Happy citizens ${n} of 5">${"❤️".repeat(n)}${"🤍".repeat(5-n)}</span>`;}
+function topBar(){return `<div class="top"><div><div class="lvl">${L().e} Level ${S.lvl+1} of 6 · ${L().title}</div><div class="ladder">${LEVELS.map((x,i)=>i<S.lvl?"⭐":i===S.lvl?"🔶":"⚪").join("")}</div></div><div><div class="muted" style="font-size:.8em;font-weight:800">Happy Citizens</div>${heartsHTML()}</div></div>`;}
+/* --- screens --- */
+function title(){const has=load();
+ setScreen(`<div class="title-wrap"><div class="pill">A civics adventure</div><h1>Capitol Climb</h1><h2>From Town Hall to the White House</h2>
+ <div class="title-btns"><button class="big" id="b-play">▶ Play</button>${has&&has.st&&has.lvl<6?`<button class="gold big" id="b-cont">Continue (Level ${has.lvl+1})</button>`:""}<button class="ghost" id="b-cards">🃏 Fact Cards</button></div>${skyline()}</div>
+ <p class="note">All people, places, and alliances are fictional. This game never takes a side.</p>`);
+ $("#b-play").onclick=()=>{newGame();statePick()};if($("#b-cont"))$("#b-cont").onclick=()=>{S=load();S.road?road270():explainer()};$("#b-cards").onclick=()=>collection(title);}
+function collection(back){const st=S||load()||{cards:{}};const all=[...LEVELS.map(l=>l.card),["270 to Win","538 electoral votes in all. A majority, 270, wins the presidency."]];
+ setScreen(`<div class="card"><div class="row" style="justify-content:space-between"><h1>🃏 Fact Cards</h1><button class="ghost" id="back">← Back</button></div><div class="cards">${all.map(c=>st.cards[c[0]]?`<div class="fcard"><b>${c[0]}</b><div>${c[1]}</div></div>`:`<div class="fcard locked"><b>???</b><div>Keep climbing to unlock!</div></div>`).join("")}</div></div>`);$("#back").onclick=back;}
+function statePick(){const list=STATES.filter(s=>s[0]!=="DC").sort((a,b)=>a[1].localeCompare(b[1]));
+ setScreen(`<div class="card"><h1>🗺️ Pick your home state</h1><p>Maple Hollow, your fictional hometown, will be here. Real state rules load from it.</p><button class="gold big" id="rand">🎲 Surprise me!</button><div class="sgrid" style="margin-top:14px">${list.map(s=>`<button data-s="${s[0]}" title="${s[1]}" aria-label="${s[1]}">${s[0]}</button>`).join("")}</div></div>`);
+ const go=ab=>{const s=STATES.find(x=>x[0]===ab);S.st={ab,n:s[1],r:s[5]};toast(`🏡 Home state: ${s[1]}!`);explainer()};
+ app().querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>go(b.dataset.s));$("#rand").onclick=()=>go(list[Math.floor(Math.random()*list.length)][0]);}
+function explainer(){const l=L();S.h=30;S.done={};save();
+ setScreen(`${topBar()}<div class="card"><span class="pill">Role Explainer</span><h1>${l.e} ${l.title}</h1><h3 class="muted">“${l.sub}” · ${l.place}${S.lvl>=2?" · "+S.st.n:""}</h3><ul class="lines">${l.lines.map(f=>`<li>${f(S.st)}</li>`).join("")}</ul>
+ <button class="big" id="go">Let's go! →</button></div>`);$("#go").onclick=mapScreen;}
+function mapBG(){const k=S.lvl<2?"city":S.lvl<5?"state":"nation";
+ if(k==="city")return `<rect width="800" height="460" fill="#eaf6ee"/><path d="M0 300 Q200 250 400 320 T800 280 V340 Q600 340 400 380 T0 360Z" fill="#9fd6e8"/><g stroke="#fff" stroke-width="16" fill="none"><path d="M0 200 H800"/><path d="M260 0 V460"/><path d="M540 0 V460"/></g>${[[60,40],[320,50],[600,40],[90,230],[600,210],[650,390],[80,390]].map(([x,y],i)=>`<rect x="${x}" y="${y}" width="120" height="56" rx="12" fill="${["#ffe9b8","#d9cff7","#ffd1cf","#c6eee9"][i%4]}"/>`).join("")}<g transform="translate(400,215)"><rect x="-44" y="0" width="88" height="36" fill="#fff" stroke="#2b2d42" stroke-width="2"/><path d="M-32 0 Q0 -32 32 0Z" fill="#fff" stroke="#2b2d42" stroke-width="2"/></g>`;
+ if(k==="state")return `<rect width="800" height="460" fill="#f6efe0"/>${[[60,60,300,40,320,240,40,260],[300,40,720,40,520,220,320,240],[520,220,720,40,760,200,700,420],[40,260,320,240,400,430,120,430],[320,240,520,220,700,420,400,430]].map((p,i)=>`<path d="M${p[0]} ${p[1]} L${p[2]} ${p[3]} L${p[4]} ${p[5]} L${p[6]} ${p[7]}Z" fill="${["#e9f6ec","#fff3d6","#efeafd","#fde6e5","#dff4f2"][i]}" stroke="#c9c0ad" stroke-width="2"/>`).join("")}<g transform="translate(420,250)"><path d="M-26 0 Q0 -34 26 0Z" fill="#fff" stroke="#2b2d42" stroke-width="2"/><rect x="-34" y="0" width="68" height="20" fill="#fff" stroke="#2b2d42" stroke-width="2"/></g>`;
+ return `<rect width="800" height="460" fill="#e3f3f6"/><path d="M90 120 Q140 70 260 80 L520 70 Q620 60 700 100 L720 150 Q680 200 690 260 L640 330 Q600 400 560 360 L470 360 Q380 420 330 380 L240 360 Q150 340 110 280 Q70 200 90 120Z" fill="#fff3d6" stroke="#c9c0ad" stroke-width="3"/><g transform="translate(400,190)"><rect x="-50" y="0" width="100" height="40" fill="#fff" stroke="#2b2d42" stroke-width="2"/><path d="M-56 0 L0 -20 L56 0Z" fill="#fff" stroke="#2b2d42" stroke-width="2"/></g>`;}
+function mapScreen(){const l=L();const items=[...l.talks.map(t=>({id:t.id,x:t.x,y:t.y,e:t.e,n:t.n})),{id:"g",x:l.game.x,y:l.game.y,e:l.game.e,n:l.game.n}];const all=items.every(i=>S.done[i.id]);
+ setScreen(`${topBar()}<div class="card" style="padding:10px"><div class="mapwrap"><svg viewBox="0 0 800 460" aria-hidden="true">${mapBG()}</svg>${items.map(i=>`<button class="pinbtn ${S.done[i.id]?"done":"pulse"}" data-pin="${i.id}" style="left:${i.x}%;top:${i.y}%" aria-label="${i.n}"><span class="e">${S.done[i.id]?"✅":i.e}</span><span class="lab">${i.n}</span></button>`).join("")}</div>
+ <div class="legend">${all?`<button class="gold big" id="elect">🗳️ ${S.lvl===5?"On to the Road to 270!":"Election Night!"}</button>`:`<p class="center muted" style="margin:6px">Tap each glowing spot to help your community. (${items.filter(i=>S.done[i.id]).length}/${items.length} done)</p>`}</div></div>`);
+ app().querySelectorAll("[data-pin]").forEach(b=>b.onclick=()=>{const id=b.dataset.pin;if(S.done[id])return toast("✅ Already done!");id==="g"?tapGame():talk(l.talks.find(t=>t.id===id))});
+ if(all)$("#elect").onclick=()=>S.lvl===5?road270(true):election();}
+function talk(t){const order=[0,1,2].sort(()=>Math.random()-.5);
+ setScreen(`${topBar()}<div class="card"><span class="pill">Mission</span><h2>${t.e} ${t.n}</h2><div class="dlg"><div>${face(t.look,{label:t.who})}<div class="center" style="font-size:.8em"><b>${t.who}</b><br><span class="muted">${t.role}</span></div></div><div class="bubble">${t.line}</div></div>
+ <div class="choices">${order.map(k=>`<button class="choice" data-c="${k}"><span class="e">${t.c[k][0]}</span><span>${t.c[k][1]}</span></button>`).join("")}</div></div>`);
+ app().querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const c=t.c[+b.dataset.c];S.h+=c[2];S.done[t.id]=1;save();
+  app().querySelector(".top").outerHTML=topBar();$(".choices").outerHTML=`<div id="react" style="margin-top:16px"><h2>${c[2]>0?"❤️ Citizens are happier!":"🤍 Hmm..."}</h2><div class="bubble">${c[0]} ${c[3]}</div><button class="big" id="ok" style="margin-top:14px">Back to the map →</button></div>`;$("#ok").onclick=mapScreen;});}
+function tapGame(){const g=L().game;let left=5;
+ setScreen(`${topBar()}<div class="card"><h2>${g.e} ${g.n}!</h2><p class="muted" style="margin:0">Tap each one. <b id="left">5</b> to go!</p><div class="tapzone" id="tz">${[0,1,2,3,4].map(i=>`<button data-t="${i}" style="left:${8+i*18}%;top:${20+((i*37)%55)}%" aria-label="tap ${i+1}">${g.tap}</button>`).join("")}</div></div>`);
+ app().querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{if(b.disabled)return;b.disabled=true;b.textContent=g.done;left--;$("#left").textContent=left;if(!left){S.h+=20;S.done.g=1;save();toast("❤️ +1 heart! Great work!");setTimeout(mapScreen,FAST?50:900)}});}
+function election(retry){const l=L();const win=S.h>=50;const pct=win?51+Math.min(12,(S.h-50)*0.15)+rnd(0,1):44+rnd(0,3);
+ setScreen(`<div class="elect"><span class="pill" style="background:#fdeccc;color:#8a5a00">Election Night</span><h1>🗳️ ${l.place}</h1><div class="box">🗳️</div><p id="prec" style="font-size:1.2em">Counting votes...</p>
+ <div class="bigbar"><div id="bp" style="width:0;background:var(--teal)">You</div><div style="flex:1"></div><div id="br" style="width:0;background:var(--violet);justify-content:flex-end">${l.rival}</div></div><div class="row" style="justify-content:space-between;font-size:1.4em;font-weight:900"><span id="np" style="color:#7fe0d8">You 0%</span><span id="nr" style="color:#c8b6ff">0%</span></div><div id="res"></div></div>`);
+ let i=0;const N=FAST?3:16;const tk=()=>{i++;const f=i/N;$("#bp").style.width=pct*f+"%";$("#br").style.width=(100-pct)*f+"%";$("#np").textContent=`You ${(pct*f).toFixed(0)}%`;$("#nr").textContent=`${l.rival} ${((100-pct)*f).toFixed(0)}%`;$("#prec").textContent=`Precincts reporting: ${Math.round(f*100)}%`;
+  if(i<N)return setTimeout(tk,FAST?10:220);
+  $(".box").style.animation="none";
+  if(win){confetti();S.stars++;addCard(l.card);save();
+   $("#res").innerHTML=`<div class="card" style="margin-top:16px"><h1 style="color:var(--teal-d)">🎉 You won!</h1><div class="fcard">🃏 <b>New fact card: ${l.card[0]}</b><div>${l.card[1]}</div></div><button class="big" id="nx" style="margin-top:14px">${S.lvl<5?"Climb to "+LEVELS[S.lvl+1].title+" →":"→"}</button></div>`;
+   $("#nx").onclick=()=>{S.lvl++;save();explainer()};}
+  else $("#res").innerHTML=`<div class="card" style="margin-top:16px;color:var(--ink)"><h2>😮 So close!</h2><p>${l.rival} won this time. Hoot tip: kind, helpful answers make citizens happy.</p><button class="gold big" id="again">🔁 Try again!</button></div>`,$("#again").onclick=()=>{S.h=60;election(true)};};
+ setTimeout(tk,FAST?10:300);}
+/* --- Road to 270 --- */
+function road270(fresh){if(fresh||!S.road){const rv={};STATES.forEach(s=>{rv[s[0]]=s[0]!==S.st.ab&&Math.random()<0.12});S.road={rv,vis:{}};save();}
+ const t=tally();const ready=t.me>=270;
+ setScreen(`${topBar()}<div class="card"><span class="pill">Final Challenge</span><h1>🗺️ The Road to 270</h1><p style="margin:4px 0">Each state has <b>electoral votes</b> (538 total). Tap a region to campaign there. You need <b>270</b>!</p>
+ <div class="track"><div class="me" style="width:${t.me/538*100}%"></div><div class="them" style="width:${t.them/538*100}%"></div><div class="mark"></div><b>You: ${t.me} · 270 to win</b></div>
+ <div class="regions">${Object.entries(REG).map(([k,r])=>`<button class="${S.road.vis[k]?"done":""}" data-r="${k}"><span class="e">${S.road.vis[k]?"✅":r.e}</span>${r.n}<span style="font-size:.75em;opacity:.85">${regEV(k)} electoral votes</span></button>`).join("")}</div>
+ <div style="margin-top:14px">${tiles(false)}</div>
+ <button class="gold big" id="night" ${ready?"":"disabled"} style="margin-top:12px">${ready?"🌙 Election Night!":"Reach 270 to unlock Election Night"}</button></div>`);
+ app().querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{const k=b.dataset.r;if(S.road.vis[k])return toast("✅ You already campaigned there!");S.road.vis[k]=1;save();road270();toast(`🚌 Rally in the ${REG[k].n}!`)});
+ if(ready)$("#night").onclick=night;}
+const regEV=k=>STATES.filter(s=>s[5]===k).reduce((a,s)=>a+s[2],0);
+function tally(){let me=0,them=0;STATES.forEach(s=>{if(S.road.rv[s[0]])them+=s[2];else if(S.road.vis[s[5]])me+=s[2]});return{me,them};}
+function tiles(final,shown){const W=62,H=50;let h=`<defs><pattern id="st" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#7b5cd6"/><rect width="3" height="8" fill="#9c84e6"/></pattern></defs>`;
+ STATES.forEach(([ab,n,ev,c,r,reg])=>{const show=!shown||shown.has(ab);let mine=!S.road.rv[ab]&&(S.road.vis[reg]||final);let fill=!show?"#f3ecdc":S.road.rv[ab]?"url(#st)":mine?"#14a3a3":"#f3ecdc";const tc=show&&(S.road.rv[ab]||mine)?"#fff":"#2b2d42";const x=6+c*(W+4),y=6+r*(H+4);
+  h+=`<g><title>${n}: ${ev}</title><rect x="${x}" y="${y}" width="${W}" height="${H}" rx="9" fill="${fill}" stroke="${ab===S.st.ab?"#f2b134":"#fff"}" stroke-width="${ab===S.st.ab?4:2}"/><text x="${x+W/2}" y="${y+21}" text-anchor="middle" font-weight="900" font-size="15" fill="${tc}">${ab}</text><text x="${x+W/2}" y="${y+39}" text-anchor="middle" font-size="13" font-weight="800" fill="${tc}">${ev}</text></g>`});
+ return `<svg viewBox="0 0 732 440" style="width:100%;height:auto" role="img" aria-label="Electoral map">${h}</svg>`;}
+function night(){const order=STATES.slice().sort((a,b)=>b[3]-a[3]);const shown=new Set();let me=0,them=0,i=0;const step=FAST?1:3;
+ setScreen(`<div class="elect"><span class="pill" style="background:#fdeccc;color:#8a5a00">Election Night</span><h1>🌙 The Road to 270</h1>
+ <div class="track" style="height:58px;margin:12px 0"><div class="me" id="tm" style="width:0"></div><div class="them" id="tt" style="width:0"></div><div class="mark"></div><b id="tb" style="font-size:1.2em">0 · 270 to win</b></div>
+ <div class="card" id="map" style="padding:8px">${tiles(true,shown)}</div><div id="res"></div></div>`);
+ const tk=()=>{for(let k=0;k<step&&i<order.length;k++){const s=order[i++];shown.add(s[0]);if(S.road.rv[s[0]])them+=s[2];else me+=s[2]}
+  $("#tm").style.width=me/538*100+"%";$("#tt").style.width=them/538*100+"%";$("#tb").textContent=`You ${me} · ${L().rival} ${them}`;$("#map").innerHTML=tiles(true,shown);
+  if(i<order.length)return setTimeout(tk,FAST?5:240);
+  confetti();S.stars=6;S.cards["270 to Win"]="538 electoral votes in all. A majority, 270, wins the presidency.";S.lvl=6;save();
+  $("#res").innerHTML=`<div class="card" style="margin-top:12px;color:var(--ink)"><h1 style="color:var(--teal-d)">🎉 You're the President!</h1><p style="font-size:1.2em">You won <b>${me}</b> electoral votes. You only needed 270!</p><button class="big" id="fin">Inauguration Day →</button></div>`;$("#fin").onclick=finale;};
+ setTimeout(tk,FAST?10:300);}
+function finale(){setScreen(`<div class="card center"><span class="pill">January 20 · Inauguration Day</span><h1>🎉 From Town Hall to the White House!</h1><div style="width:150px;margin:auto">${face(35,{shirt:"#14a3a3",label:"You"})}</div><div class="stars">⭐⭐⭐⭐⭐⭐</div>
+ ${hootSay("Every office had powers and limits. Even the President shares power with Congress, the courts, and the states. That's checks and balances!")}
+ <div class="row" style="justify-content:center;margin-top:14px"><button class="ghost" id="cards">🃏 My fact cards (${Object.keys(S.cards).length})</button><button id="again">▶ Play again</button></div></div>`);setTimeout(confetti,50);
+ $("#cards").onclick=()=>collection(finale);$("#again").onclick=()=>{try{localStorage.removeItem("capclimb2")}catch(e){}S=null;title()};}
+LEVELS[2].talks.splice(1,1);LEVELS[3].talks.splice(1,1);LEVELS[4].talks.splice(0,1);
+window.CC={get S(){return S},STATES,LEVELS};
+title();
+</script>
+</body>
+</html>
