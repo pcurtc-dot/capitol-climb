@@ -84,10 +84,14 @@ button:focus-visible{outline:4px solid var(--gold);outline-offset:3px}
 .confetti i{position:absolute;width:12px;height:16px;top:-20px;animation:fall 2.6s linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 .stars{font-size:2em;letter-spacing:4px}
+#musicbtn{position:fixed;top:10px;right:10px;z-index:200;min-height:56px;min-width:56px;padding:.3em .7em;border-radius:50px;background:#fff;color:var(--ink);box-shadow:0 4px 0 #e0d6c2;border:3px solid var(--gold);font-size:1.15em}
+#musicbtn.off{border-color:#ccc;opacity:.85}
 </style>
 </head>
 <body>
 <div id="app"></div>
+<button id="musicbtn" type="button" aria-label="Music on/off" title="Music on/off">🎵</button>
+<audio id="bgm" preload="none"></audio>
 <script>
 "use strict";
 const STATES=[["AK","Alaska",3,0,0,"W"],["ME","Maine",4,10,0,"NE"],["WI","Wisconsin",10,5,1,"MW"],["VT","Vermont",3,9,1,"NE"],["NH","New Hampshire",4,10,1,"NE"],
@@ -251,6 +255,25 @@ function finale(){setScreen(`<div class="card center"><span class="pill">January
  $("#cards").onclick=()=>collection(finale);$("#again").onclick=()=>{try{localStorage.removeItem("capclimb2")}catch(e){}S=null;title()};}
 LEVELS[2].talks.splice(1,1);LEVELS[3].talks.splice(1,1);LEVELS[4].talks.splice(0,1);
 window.CC={get S(){return S},STATES,LEVELS};
+/* Background music: public-domain US military band recordings streamed from Wikimedia Commons */
+(function(){
+ const B="https://upload.wikimedia.org/wikipedia/commons/";
+ const TRACKS=["e/ed/Sousa%27s_%22The_Stars_and_Stripes_Forever%22_-_United_States_Marine_Band_%282017%29.mp3","8/8d/Sousa%27s_%22The_Washington_Post%22_-_United_States_Marine_Band_%282017%29.mp3","9/9d/Sousa%27s_%22Semper_Fidelis%22_-_United_States_Marine_Band_%282016%29.mp3","1/12/Sousa%27s_%22The_Liberty_Bell%22_-_United_States_Marine_Band_%282017%29.mp3","3/36/America_the_Beautiful_-_Starlifter_-_United_States_Air_Force_Band_of_Mid-America.mp3","9/9f/Yankee_Doodle_-_Concert_Band_-_United_States_Air_Force_Heritage_of_America_Band.mp3"].map(t=>B+t);
+ const a=document.getElementById("bgm"),btn=document.getElementById("musicbtn");if(!a||!btn)return;
+ let on=true,started=false,idx=0,fails=0;try{on=localStorage.getItem("capclimb_music")!=="off"}catch(e){}
+ a.volume=0.4;
+ function paint(){btn.textContent=on?"🎵":"🔇";btn.classList.toggle("off",!on);btn.setAttribute("aria-pressed",String(on))}
+ function load(i){idx=(i+TRACKS.length)%TRACKS.length;a.src=TRACKS[idx];a.volume=0.4}
+ function play(){if(!on)return;if(!a.src)load(idx);const pr=a.play();if(pr&&pr.catch)pr.catch(()=>{})}
+ a.addEventListener("ended",()=>{fails=0;load(idx+1);play()});
+ a.addEventListener("playing",()=>{fails=0});
+ a.addEventListener("error",()=>{if(++fails<TRACKS.length&&navigator.onLine!==false){load(idx+1);play()}});
+ btn.addEventListener("click",e=>{e.stopPropagation();on=!on;try{localStorage.setItem("capclimb_music",on?"on":"off")}catch(err){}paint();started=true;if(on)play();else a.pause()});
+ document.addEventListener("click",()=>{if(!started){started=true;play()}},true);
+ window.addEventListener("online",()=>{if(on&&started&&a.paused){fails=0;play()}});
+ window.CCMusic={get on(){return on},get playing(){return !a.paused},get track(){return a.src},TRACKS};
+ paint();
+})();
 title();
 </script>
 </body>
